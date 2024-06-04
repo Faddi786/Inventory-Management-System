@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Page</title>
+    <link rel="stylesheet" href="../static/CSS/registrationpage.css">
+</head>
+<body>
+    <div class="container">
+        <h2>REGISTRATION PAGE</h2>
+        <div class="header">
+            <img src="../static/Images/loginheader.png" alt="login header" class="header-image">
+        </div>
+        <form class="login-form" onsubmit="return validateForm(event)">
+            <div class="input-with-icon">
+                <span class="icon"><img src="../static/Images/username_logo.png" alt="Username Icon"></span>
+                <input type="text" id="user-id" name="user-id" placeholder="User ID">
+            </div>
+
+            <div class="input-with-icon">
+                <span class="icon"><img src="../static/Images/password_icon.png" alt="Password Icon"></span>
+                <input type="password" id="password" name="password" placeholder="Password">
+            </div>
+            <div class="input-with-icon">
+                <span class="icon"><img src="../static/Images/password_icon.png" alt="Password Icon"></span>
+                <input type="password" id="confirm-password" name="confirm-password" placeholder=" Confirm Password">
+            </div>
+
+            <div class="input-with-icon">
+                <label for="photo-upload">Upload photo:</label>
+                <input type="file" id="photo-upload" name="photo-upload" accept="image/*">
+            </div>
+            
+            <button type="submit" id="submit-button">Create Account</button>
+        </form>
+    </div>
+    <div class="image-container">
+        <img src="../static/Images/logo.png" alt="PFEPL Logo">
+    </div>
+
+    <script>
+        function validateForm(event) {
+            event.preventDefault();
+            var userId = document.getElementById('user-id').value;
+            var password = document.getElementById('password').value;
+            var confirmPassword = document.getElementById('confirm-password').value;
+            var photoUpload = document.getElementById('photo-upload').files[0];
+
+            if (userId.length < 4 || password.length < 4 || confirmPassword.length < 4) {
+                alert('User ID, Password, and Confirm Password must be at least 4 characters long.');
+                return false;
+            }
+
+            if (password !== confirmPassword) {
+                alert('Password and Confirm Password do not match.');
+                return false;
+            }
+
+            if (!photoUpload) {
+                alert('Please upload a photo.');
+                return false;
+            }
+
+            // Assuming we have a backend to handle this part
+            var formData = new FormData();
+            formData.append('user-id', userId);
+            formData.append('password', password);
+            formData.append('photo-upload', photoUpload, userId + '.' + photoUpload.name.split('.').pop());
+
+            // Fake AJAX call for demonstration purposes
+            fetch('/registerdetails', {
+                method: 'POST',
+                body: formData
+            }).then(response => response.json())
+              .then(data => {
+                if (data.success) {
+                    alert('Registration Successful, you can proceed to login');
+                    // Redirect to login page or reset form
+                    // window.location.href = '/login'; // Uncomment this line to redirect
+                } else {
+                    alert('Registration failed: ' + data.message);
+                }
+            }).catch(error => {
+                alert('Error: ' + error.message);
+            });
+
+            return false;
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,40 @@
+inventory management website
+automatic excel filling
+change email functionality as per user 
+when we say back and forth to a form that has already beem taken action on, but we do it from the arrow key of the browser, the form should not be able to be accessible
+test whether mupltiple users can simultaneously access the form data
+request for chalan automated tool
+add delete employee
+add delete item
+attach register module
+centralized database
+add images option
+change variable names in code and on form
+test whether mupltiple users can simultaneously access the form data
+transfer items to someone elses name before changing project else u cant move from your project
+Put dropdown in choose items in handover form for filtering
+reached or not
+make table on homepage for user info	
+it should check in the approve send form whether the ewau bill no that the e1 is putting already exists in the database or not
+sql
+we can add code to check from the image metadata whether the image being uploaded is clicked under 1 hour or not, that will tell us whether the image is latest or an old one 
+every error should be returned anywhere in the code should be returned and it should be displayed in the messagebox, put js code that if message not equals to success message then it is an error and display it and in red 
+test
+deploy
+
+
+
+Script
+Machine learning script to detect white patches in the ortho
+
+Travel Management App
+
+
+Intellisense data analysis
+
+
+2 scratch 
+1 more develop
+1 middle
+
+4 software

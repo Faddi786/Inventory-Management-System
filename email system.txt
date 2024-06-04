@@ -1,0 +1,81 @@
+stage 1 :
+e1 : you have initiated a transaction
+m1 : a transaction has been initiated, please approve it.
+
+stage 2 :
+e1 : approval has been given to send the items
+m1 : you have a approved a transaction to send
+m2 : a transaction to your project has been initiated
+e2 : a transaction to your name has been initiated
+
+stage 3 : 
+e1 : the transaction goods has reach the destination
+m1 : the transaction goods has reach the destination
+e2 : mail for receive approval has been send
+m2 : a transaction for receiving goods on your project is pending, please approve
+
+stage 4 :
+all : transaction has been completed successfully
+
+
+form no
+ewaybill no
+sender
+receiver
+source
+destination
+initiationdate
+
+
+stage 1
+
+email(stage,formno, ewaybill, sender, receiver, source, destination, initiationdate, e1mail, e2mail, m1mail, m2mail)
+
+if stage 1 
+e1_message = you have initiated a transaction
+m1_message = a transaction has been initiated, please approve it.
+
+
+if stage 2 
+e1_message = approval has been given to send the items
+e2_message= a transaction to your name has been initiated
+m1_message = you have approved a transaction to send
+m2_message = a transaction to your project has been initiated
+
+
+
+if stage 3
+e1_message = the transaction goods has reach the destination
+e2_message =  mail for receive approval has been send
+m1_message = the transaction goods has reach the destination
+m2_message = a transaction for receiving goods on your project is pending, please approve
+
+
+
+if stage 4
+e1_message = m1_message = e2_message = m2_message = transaction has been completed successfully
+
+i want an email algorithm like this
+it will send the mail to respective people with their respective messages at each respective stage
+
+also add these in the body after the message
+form no
+ewaybill no
+sender
+receiver
+source
+destination
+initiationdate
+
+
+e1mail, e2mail, m1mail, m2mail = extract_emails(sendername,receivername,m1project,m2project)
+
+
+i want a code that will open user_info
+first go in the Name column
+match the sender and receiver name
+then extract their emailids from the MailID column and put it in variables
+then go in the project column 
+match the m1project and m2 project
+if found then go in the MailID column and extract their mailids and put in variable
+then return these 4 variables 
