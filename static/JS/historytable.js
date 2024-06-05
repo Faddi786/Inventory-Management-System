@@ -19,6 +19,10 @@
             // Pass the filtered data to the functions
             populateTable(filteredData);
             populateFilterDropdowns(filteredData);
+
+            if (sessionData.TypeOfAccount === "Admin") {
+                $(".notForAdmin").hide();
+            }
             
         })
         .fail(function(jqxhr, textStatus, error) {
@@ -43,7 +47,7 @@
                     '<td>' + transaction.Sender + '</td>' +
                     '<td>' + transaction.Receiver + '</td>' +
                     '<td>' + transaction.InitiationDate + '</td>' +
-                    '<td>' + transaction.TransactionType + '</td>' +
+                    '<td class="notForAdmin">' + transaction.TransactionType + '</td>' +
                     '<td>' + transaction.Status + '</td>' +
                     '</tr>');
             });
