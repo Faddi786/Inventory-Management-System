@@ -13,7 +13,7 @@ var destinationValue = document.getElementById("Destination").textContent.trim()
 
 // Check if the source and destination are the same and e-way bill is empty
 if (sourceValue !== destinationValue && ewaybillValue.trim() === "") {
-    floatingMessageBox('Source and Destination are the same. E-way bill is compulsory.');
+    floatingMessageBox('Source and Destination are the different. E-way bill is compulsory.');
     event.preventDefault(); // Prevent the form from submitting
 } else if (ewaybillValue.trim() !== "" && (ewaybillValue.trim().length !== 12 || /\s/.test(ewaybillValue))) {
     floatingMessageBox('Please enter exactly 12 digits for the e-way bill number');

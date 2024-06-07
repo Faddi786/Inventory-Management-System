@@ -156,14 +156,17 @@ def process_form_data(form_data):
 
         # Create a DataFrame to store the new data
         columns = ['FormID', 'Source', 'Destination', 'Sender', 'Receiver', 'Category', 'Name', 'Make', 'Model', 'ProductID', 'SenderCondition', 'SenderRemarks', 'InitiationDate', 'Status',
-                   'EwayBillNo', 'Reached', 'ReceiverCondition', 'ReceiverRemark', 'ApprovalToSend', 'ApprovalToReceive', 'CompletionDate']
+                   'EwayBillNo', 'ReceiverCondition', 'ReceiverRemark', 'ApprovalToSend', 'ApprovalToReceive', 'CompletionDate']
         df = pd.DataFrame(columns=columns)
         
         # Initialize new data with default values
         current_date_time = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
         for i, item in enumerate(item_details):
+            sender_remarks = item.get('SenderRemarks', '')
+            if not sender_remarks:  # Check if SenderRemarks is empty
+                sender_remarks = '-'
             df.loc[i] = [unique_form_id, source, destination, sender, receiver, item.get('Category', ''), item.get('Name', ''), item.get('Make', ''), item.get('Model', ''), item.get('ProductID', ''), 
-                         item.get('SenderCondition', ''), item.get('SenderRemarks', ''), current_date_time, 'Pending', '-', '-', '-', '-', '-', '-', '-']
+                         item.get('SenderCondition', ''), sender_remarks, current_date_time, 'Pending', '-', '-', '-', '-', '-', '-']
         print('this is the df we made with the details', df)
 
         # Concatenate the existing data with the new data

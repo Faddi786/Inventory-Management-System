@@ -75,7 +75,6 @@ def receive_approval_request_function(form_data):
         serial_no = form_item['SerialNo']
         receiver_condition = form_item['ReceiverCondition']
         receiver_remark = form_item['ReceiverRemark']
-        reached = form_item['Reached']
         print('This is the product details serial no:', serial_no)
         
         # Check if FormID and SerialNo match in the Excel data
@@ -85,10 +84,9 @@ def receive_approval_request_function(form_data):
         if not match_row.empty:
             # Update the corresponding columns
             match_row_index = match_row.index[0]  # Assuming there's only one match
-            excel_data.iloc[match_row_index, 13] = reached
-            excel_data.iloc[match_row_index, 14] = receiver_condition
-            excel_data.iloc[match_row_index, 15] = receiver_remark
-            excel_data.iloc[match_row_index, 19] = current_datetime  # Assuming the 19th column is index 18
+            excel_data.iloc[match_row_index, 13] = receiver_condition
+            excel_data.iloc[match_row_index, 14] = receiver_remark
+            excel_data.iloc[match_row_index, 18] = current_datetime  # Assuming the 19th column is index 18
         else:
             print(f"No matching entry found for FormID: {form_no} and SerialNo: {serial_no}")
     
