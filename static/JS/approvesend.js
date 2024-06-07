@@ -7,13 +7,21 @@ submitButton.addEventListener("click", function(event) {
     const ewaybillInput = document.getElementById('ewaybill');
     const ewaybillValue = ewaybillInput.value.trim();
 
-    // Check if the input is not empty and contains space or length is not exactly 12 characters
-    if (ewaybillValue.trim() !== "" && (ewaybillValue.trim().length !== 12 || /\s/.test(ewaybillValue))) {
-        floatingMessageBox('Please enter exactly 12 digits for the e-way bill number, without spaces, or leave it empty.')
-        event.preventDefault(); // Prevent the form from submitting
-    } else {
+// Retrieve source and destination values from HTML labels
+var sourceValue = document.getElementById("Source").textContent.trim();
+var destinationValue = document.getElementById("Destination").textContent.trim();
+
+// Check if the source and destination are the same and e-way bill is empty
+if (sourceValue !== destinationValue && ewaybillValue.trim() === "") {
+    floatingMessageBox('Source and Destination are the same. E-way bill is compulsory.');
+    event.preventDefault(); // Prevent the form from submitting
+} else if (ewaybillValue.trim() !== "" && (ewaybillValue.trim().length !== 12 || /\s/.test(ewaybillValue))) {
+    floatingMessageBox('Please enter exactly 12 digits for the e-way bill number');
+    event.preventDefault(); // Prevent the form from submitting
+} else {
         logRowValues(); // Call the function to log row values
         document.getElementById('disapproveButton').disabled = true; // Disable the button
+        document.getElementById('approvalButton').disabled = true; // Disable the button
     }
 });
 var tableBody = document.querySelector("#mainTable tbody");
@@ -22,6 +30,7 @@ var disapproveButton = document.getElementById("disapproveButton");
 
 disapproveButton.addEventListener("click", function() {
     document.getElementById('approvalButton').disabled = true; // Disable the button
+    document.getElementById('disapproveButton').disabled = true; // Disable the button
 
     var formNo = document.getElementById("formNo").textContent.trim();
     var xhr = new XMLHttpRequest();
@@ -56,21 +65,29 @@ function logRowValues() {
 
     var xhr = new XMLHttpRequest();
     xhr.open("POST", "http://127.0.0.1:5001/approve_send_request", true);
-
+    
     xhr.onreadystatechange = function() {
         if (xhr.readyState === XMLHttpRequest.DONE) {
             if (xhr.status === 200) {
                 console.log('Success:', xhr.responseText);
-                floatingMessageBox("Approval has been successfully given.\n The sender may proceed to send the items.", 'green','approvetable');
+                floatingMessageBox("Approval has been successfully given.\n The sender may proceed to send the items.", 'green', 'approvetable');
+            } else if (xhr.status === 400 && xhr.responseText.includes('empty space')) {
+                floatingMessageBox("No empty space please");
+                document.getElementById('disapproveButton').disabled = false; // Disable the button
+                document.getElementById('approvalButton').disabled = false; // Disable the button
+
+
             } else {
                 console.error('Error:', xhr.status);
                 floatingMessageBox(xhr.status, 'red');
-                // Handle error response from server
+                // Handle other error responses from the server
             }
         }
     };
+    
     xhr.setRequestHeader("Content-Type", "application/json"); // Set request header
     xhr.send(JSON.stringify(formObject));
+    
 }
 
 window.onload = function() {

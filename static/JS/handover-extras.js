@@ -35,7 +35,7 @@
 
         // Check if From Person and To Person, and From Project and To Project are the same
         if (fromPerson === toPerson && fromProject === toProject) {
-            errorMessage = "From Person and To Person, and From Project and To Project should not be the same.";
+            errorMessage = "Source, Destination, Sender, Receiver should not be the same";
         }
 
         // Check if there are no selected items in the first tab's table
@@ -120,7 +120,7 @@ console.log(formObject); // Check the collected data in formObject
                 // Check if the response indicates success
                 if (data.message === 'Excel file updated successfully') {
                     // Update the h4 tag with the success message
-                    floatingMessageBox("Handover process has been successfully initiated.",'green');
+                    floatingMessageBox("Handover process has been successfully initiated.",'green','homepage');
 
                 } else {
                     floatingMessageBox(data.message,'red');

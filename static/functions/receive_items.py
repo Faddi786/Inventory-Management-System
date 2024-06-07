@@ -99,3 +99,23 @@ def receive_approval_request_function(form_data):
 
 
 
+
+
+def disapporve_receive_approval_request_function(form_data):
+    # Read the Excel file into a DataFrame
+    df = pd.read_excel('Excel/handover_data.xlsx')
+
+
+    print("we are here in disapporve_receive_approval_request_function")
+    # Extract formNo from the form_data
+    formNo = form_data['formNo']
+    print(formNo)
+    # Update the 'status' column to 'Rejected' where 'FormID' matches the formNo received in the form data
+    df.loc[df['FormID'] == formNo, ['Status', 'CompletionDate']] = ['Rejected', 0]
+
+    # Write the updated DataFrame back to the Excel file
+    with pd.ExcelWriter('Excel/handover_data.xlsx', engine='xlsxwriter') as writer:
+        df.to_excel(writer, index=False)
+
+
+

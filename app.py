@@ -214,14 +214,28 @@ def approve_receive_request():
     return "Approval has been successfully given, the email is sent, the sender may proceed to send the items"
 
 
+@app.route('/disapprove_receive_request', methods=['POST'])
+def disapprove_receive_request():
+
+    data = request.json  # Assuming the data sent in the request body is JSON
+    
+    approvereceive.disapprove_receive_request_function(data)
+    return "Approval has been successfully given, the email is sent, the sender may proceed to send the items"
+
+
+
+
 @app.route('/transfer_progress_table_data')
 def transfer_progress_table_data():
     try:
-        name = session.get('login_row_data', {}).get('Name')
+        ID = session.get('login_row_data', {}).get('ID')
 
         project = session.get('login_row_data', {}).get('Project')
 
-        data = transfer_progress.transfer_progress_table_data_function(name, project, session.get('login_row_data', {}))
+        toa = session.get('login_row_data', {}).get('TypeOfAccount')
+        print('this is the session data',session.get('login_row_data', {}))
+        data = transfer_progress.transfer_progress_table_data_function(ID, project, toa, session.get('login_row_data', {}))
+        
         print(data)
 
         return data
@@ -246,6 +260,17 @@ def receive_approval_request():
     print("This is the receive_approval_request form data", form_data)
     receive_items.receive_approval_request_function(form_data)
     return "Mail for approval of receiving item is sent, you may contact your manager to approve it."
+
+
+
+@app.route('/disapprove_receive_approval_request', methods=['POST'])
+def disapprove_receive_approval_request():
+    form_data = request.json  # Assuming the form data is sent as JSON
+    print("This is the receive_approval_request form data", form_data)
+    receive_items.disapporve_receive_approval_request_function(form_data)
+    return "Mail for approval of receiving item is sent, you may contact your manager to approve it."
+
+
 
 
 

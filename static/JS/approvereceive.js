@@ -15,6 +15,12 @@ window.onload = function() {
                 var firstFormData = data[0];
                 var initiationDateTime = firstFormData['InitiationDate'];
                 var initiationDate = initiationDateTime ? initiationDateTime.split(' ')[0] : 'Loading Initiation Date ...';
+                
+
+                var completionDateTime = firstFormData['CompletionDate'];
+                var completionDate = completionDateTime ? completionDateTime.split(' ')[0] : 'Loading Initiation Date ...';
+
+
                 document.getElementById("formNo").textContent = firstFormData['FormID'] || 'Loading Form ID ...';
                 document.getElementById("ewaybillno").textContent = firstFormData['EwayBillNo'] || 'Loading Eway Bill No ...';
                 document.getElementById("Sender").textContent = firstFormData['Sender'] || 'Loading From Person ...';
@@ -22,19 +28,19 @@ window.onload = function() {
                 document.getElementById("Receiver").textContent = firstFormData['Receiver'] || 'Loading To Person ...';
                 document.getElementById("Destination").textContent = firstFormData['Destination'] || 'Loading To Project ...';
                 document.getElementById("InitiationDate").textContent = initiationDate;
-                document.getElementById("CompletionDate").textContent = firstFormData['CompletionDate'] || 'Loading To Project ...';
+                document.getElementById("CompletionDate").textContent = completionDate;
             
                 var table = document.getElementById("mainTable").getElementsByTagName('tbody')[0];
                 data.forEach(function(row, index) {
                     var newRow = table.insertRow();
                     newRow.insertCell(0).textContent = index + 1;
-                    // Checkbox cell
-                    var checkboxCell = newRow.insertCell(1);
-                    var checkbox = document.createElement('input');
-                    checkbox.type = 'checkbox';
-                    checkbox.checked = row['Reached'];
-                    checkbox.disabled = true;
-                    checkboxCell.appendChild(checkbox);
+                
+                    // Status cell
+                    var statusCell = newRow.insertCell(1);
+                    var statusLabel = document.createElement('label');
+                    statusLabel.textContent = row['Reached'] ? 'Accepted' : 'Rejected';
+                    statusCell.appendChild(statusLabel);
+                
                     // Remaining data cells
                     newRow.insertCell(2).textContent = row['Category'];
                     newRow.insertCell(3).textContent = row['Name'];
@@ -46,6 +52,7 @@ window.onload = function() {
                     newRow.insertCell(9).textContent = row['ReceiverCondition'];
                     newRow.insertCell(10).textContent = row['ReceiverRemark'];
                 });
+                
             }
              else {
                 console.error("No form data or invalid data format received");
@@ -101,3 +108,34 @@ function logRowValues() {
     xhr.setRequestHeader("Content-Type", "application/json");
     xhr.send(JSON.stringify(formObject));
 }
+
+
+
+var disapproveButton = document.getElementById("disapproveButton");
+
+disapproveButton.addEventListener("click", function() {
+    document.getElementById('approvalButton').disabled = true; // Disable the button
+    document.getElementById('disapproveButton').disabled = true; // Disable the button
+
+    var formNo = document.getElementById("formNo").textContent.trim();
+    var xhr = new XMLHttpRequest();
+    xhr.open("POST", "/disapprove_receive_request", true);
+    xhr.setRequestHeader("Content-Type", "application/json");
+    xhr.onreadystatechange = function() {
+        if (xhr.readyState === XMLHttpRequest.DONE) {
+            if (xhr.status === 200) {
+                // Request was successful
+                console.log("Form No sent successfully!");
+                console.log(formNo)
+                floatingMessageBox("Form Transaction has been disapproved", 'green','approvetable');
+            } else {
+                // There was an error
+                console.error("Error:", xhr.statusText);
+            }
+        }
+    };
+    var data = JSON.stringify({"formNo": formNo});
+    xhr.send(data);
+});
+
+

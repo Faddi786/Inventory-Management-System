@@ -205,3 +205,33 @@ askApprovalButton.addEventListener('click', function() {
 
 // Load form data on window load
 window.onload = loadFormData;
+
+
+
+var disapproveButton = document.getElementById("disapproveButton");
+
+disapproveButton.addEventListener("click", function() {
+    document.getElementById('ask-approval-button').disabled = true; // Disable the button
+    document.getElementById('disapproveButton').disabled = true; // Disable the button
+
+    var formNo = document.getElementById("formNo").textContent.trim();
+    var xhr = new XMLHttpRequest();
+    xhr.open("POST", "/disapprove_receive_approval_request", true);
+    xhr.setRequestHeader("Content-Type", "application/json");
+    xhr.onreadystatechange = function() {
+        if (xhr.readyState === XMLHttpRequest.DONE) {
+            if (xhr.status === 200) {
+                // Request was successful
+                console.log("Form No sent successfully!");
+                console.log(formNo)
+                floatingMessageBox("Form Transaction has been disapproved", 'green','approvetable');
+            } else {
+                // There was an error
+                console.error("Error:", xhr.statusText);
+            }
+        }
+    };
+    var data = JSON.stringify({"formNo": formNo});
+    xhr.send(data);
+});
+

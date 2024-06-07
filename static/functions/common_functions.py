@@ -28,7 +28,7 @@ def extract_rows_from_excel(form_id):
     print('hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh', filtered_df)
 
     # Replace NaN values with "Nan"
-    filtered_df.fillna("Nan", inplace=True)
+    filtered_df.fillna("-", inplace=True)
 
     # Convert filtered DataFrame to JSON
     json_data = filtered_df.to_json(orient="records")

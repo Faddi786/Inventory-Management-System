@@ -2,7 +2,7 @@ import pandas as pd
 import json
 from datetime import datetime
 
-def replace_nan_with_word(data, word="nan"):
+def replace_nan_with_word(data, word="-"):
     if isinstance(data, dict):
         return {k: replace_nan_with_word(v, word) for k, v in data.items()}
     elif isinstance(data, list):

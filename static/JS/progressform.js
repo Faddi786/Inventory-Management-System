@@ -46,7 +46,7 @@ var data;
                         stage4 = 'Disapproved';
                     }
                 
-                    if (firstFormData['CompletionDate'] !== 'Nan') {
+                    if (firstFormData['CompletionDate'] !== '-') {
                         stage3 = 'Completed';
                     }
                 

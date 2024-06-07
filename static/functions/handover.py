@@ -19,13 +19,15 @@ def generate_form_id():
     random.shuffle(id_list)
     return ''.join(id_list)
 
-def is_item_already_initiated(product_ids):
-
+def is_item_already_initiated(name, product_ids):
     # Read the Excel file with specific sheet name
     df = pd.read_excel('Excel/handover_data.xlsx')
     
-    # Get the set of product IDs from the transaction sheet
-    transaction_product_ids = set(df['ProductID'])
+    # Filter rows where Sender is the given name and Status is 'Pending'
+    filtered_df = df[(df['Sender'] == name) & (df['Status'] == 'Pending')]
+    
+    # Get the set of product IDs from the filtered dataframe
+    transaction_product_ids = set(filtered_df['ProductID'])
     
     # Find the intersection between the transaction product IDs and the provided product IDs
     common_product_ids = list(set(product_ids) & transaction_product_ids)
@@ -73,7 +75,7 @@ def cart_items_function(name,project,session_data):
             data.append(item)
 
     # Call is_item_already_initiated to receive items that are already initiated, they will be present in the transaction sheet
-    already_initiated_items = is_item_already_initiated(Serial_Nos)
+    already_initiated_items = is_item_already_initiated(name,Serial_Nos)
 
     # Remove items from data if their Serial No matches any in the already_initiated_items list
     data = [item for item in data if item['SerialNo'] not in already_initiated_items]
@@ -129,7 +131,7 @@ def receive_destination_dropdown_values():
 
 
 def process_form_data(form_data):
-    print('we are here in the process form data functionnnnnnnnnnnnnnnnnnnn', form_data)
+    print('we are here in the process form data function', form_data)
     try:
         # Extract form details
         form_details = form_data[0]
@@ -138,35 +140,38 @@ def process_form_data(form_data):
         sender = form_details.get('Sender', '')
         receiver = form_details.get('Receiver', '')
 
-
-        
         # Extract item details
         item_details = form_data[1:]
 
         excel_data = pd.read_excel('Excel/handover_data.xlsx')
         print('this is the excel data', excel_data)
+
         # Generate a unique FormID
         form_ids = excel_data['FormID'].tolist()
-        print('this is the formidlist already present in the excel',form_ids)
+        print('this is the formid list already present in the excel', form_ids)
         unique_form_id = generate_form_id()
         while unique_form_id in form_ids:
             unique_form_id = generate_form_id()
-        print('this is the form id that we have generated now',unique_form_id)
+        print('this is the form id that we have generated now', unique_form_id)
+
         # Create a DataFrame to store the new data
-        df = pd.DataFrame(columns=['FormID', 'Source', 'Destination', 'Sender', 'Receiver', 'Category','Name','Make','Model','ProductID', 'SenderCondition', 'SenderRemarks', 'InitiationDate', 'Status'])
+        columns = ['FormID', 'Source', 'Destination', 'Sender', 'Receiver', 'Category', 'Name', 'Make', 'Model', 'ProductID', 'SenderCondition', 'SenderRemarks', 'InitiationDate', 'Status',
+                   'EwayBillNo', 'Reached', 'ReceiverCondition', 'ReceiverRemark', 'ApprovalToSend', 'ApprovalToReceive', 'CompletionDate']
+        df = pd.DataFrame(columns=columns)
         
-        # Add item details to DataFrame
+        # Initialize new data with default values
         current_date_time = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
         for i, item in enumerate(item_details):
-            df.loc[i+1] = [unique_form_id, source, destination, sender, receiver, item.get('Category', ''),item.get('Name', ''),item.get('Make', ''),item.get('Model', ''),item.get('ProductID', ''), item.get('SenderCondition', ''), item.get('SenderRemarks', ''), current_date_time, 'Pending']
-        print('this is the df we made with the details ', df)
+            df.loc[i] = [unique_form_id, source, destination, sender, receiver, item.get('Category', ''), item.get('Name', ''), item.get('Make', ''), item.get('Model', ''), item.get('ProductID', ''), 
+                         item.get('SenderCondition', ''), item.get('SenderRemarks', ''), current_date_time, 'Pending', '-', '-', '-', '-', '-', '-', '-']
+        print('this is the df we made with the details', df)
+
         # Concatenate the existing data with the new data
         updated_data = pd.concat([excel_data, df], ignore_index=True)
 
-        # Write the updated data back to the 'transaction' sheet
+        # Write the updated data back to the 'handover_data.xlsx' file
         updated_data.to_excel('Excel/handover_data.xlsx', index=False)
         print('yeahhh we have done it')
-
 
         return {'message': 'Data successfully updated in the transaction sheet of the Excel file.'}
     except Exception as e:

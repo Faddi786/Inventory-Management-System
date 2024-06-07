@@ -57,7 +57,7 @@ def transaction_history_table_function(name, project, session_data):
         return jsonify({"error": "Error converting data to JSON"})
 
 
-def replace_nan_with_word(data, word="nan"):
+def replace_nan_with_word(data, word="-"):
     if isinstance(data, dict):
         return {k: replace_nan_with_word(v, word) for k, v in data.items()}
     elif isinstance(data, list):

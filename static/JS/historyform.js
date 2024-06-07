@@ -44,20 +44,20 @@ var data;
                     var stage4 = 'Pending';
                 
                     // Check conditions and update stages accordingly
-                    if (firstFormData['ApprovalToSend'] === 'YES') {
+                    if (firstFormData['ApprovalToSend'] === 1) {
                         stage2 = 'Completed';
-                    } else if (firstFormData['ApprovalToSend'] === 'NO') {
+                    } else if (firstFormData['ApprovalToSend'] === 0) {
                         stage2 = 'Disapproved';
                         // If disapproved, set stage3 and stage4 to disapproved too
                         stage3 = 'Disapproved';
                         stage4 = 'Disapproved';
                     }
                 
-                    if (firstFormData['CompletionDate'] !== 'Nan') {
+                    if (firstFormData['CompletionDate'] !== 0) {
                         stage3 = 'Completed';
                     }
                 
-                    if (firstFormData['ApprovalToReceive'] === 'YES') {
+                    if (firstFormData['ApprovalToReceive'] === 1) {
                         stage4 = 'Completed';
                     }
                 
@@ -86,47 +86,33 @@ var data;
 
                     data.forEach(function(row, index) {
                         var newRow = table.insertRow();
-                        var serialNoCell = newRow.insertCell(0);
-                        serialNoCell.textContent = index + 1; // Generate dynamic serial number starting from 1
+                        newRow.insertCell(0).textContent = index + 1;
                     
-                        var checkboxCell = newRow.insertCell(1); // Checkbox cell
+                        // Status cell
+                        var statusCell = newRow.insertCell(1);
+                        var statusLabel = document.createElement('label');
                     
-                        // Check if stage2 is rejected
-                        if (stage2 !== 'Disapproved') {
-                            var checkbox = document.createElement('input');
-                            checkbox.type = 'checkbox';
-                            checkbox.checked = row['Reached'] === 1; // Assuming 'Reached' is a string
-                            checkbox.disabled = true;
-                            checkboxCell.appendChild(checkbox);
+                        var stage2Text = document.getElementById("Stage2").textContent;
+                        if (stage2Text.toLowerCase() === 'disapproved') {
+                            statusLabel.textContent = 'Rejected';
+                        } else {
+                            statusLabel.textContent = row['Reached'] === 1 ? 'Accepted' : 'Rejected';
                         }
+                        statusCell.appendChild(statusLabel);
                     
-                        var productCategoryCell = newRow.insertCell(2);
-                        productCategoryCell.textContent = row['Category'];
-                    
-                        var ProductNoCell = newRow.insertCell(3);
-                        ProductNoCell.textContent = row['ProductID'];
-                    
-                        var productNameCell = newRow.insertCell(4);
-                        productNameCell.textContent = row['Name'];
-                    
-                        var productNameCell = newRow.insertCell(5);
-                        productNameCell.textContent = row['Make'];
-                    
-                        var ModelCell = newRow.insertCell(6);
-                        ModelCell.textContent = row['Model'];
-                    
-                        var SenderconditionCell = newRow.insertCell(7);
-                        SenderconditionCell.textContent = row['SenderCondition'];
-                    
-                        var SenderremarksCell = newRow.insertCell(8);
-                        SenderremarksCell.textContent = row['SenderRemarks'];
-                    
-                        var ReceiverconditionCell = newRow.insertCell(9);
-                        ReceiverconditionCell.textContent = row['ReceiverCondition'];
-                    
-                        var ReceiverremarksCell = newRow.insertCell(10);
-                        ReceiverremarksCell.textContent = row['ReceiverRemark'];
+                        // Remaining data cells
+                        newRow.insertCell(2).textContent = row['Category'];
+                        newRow.insertCell(3).textContent = row['Name'];
+                        newRow.insertCell(4).textContent = row['Make'];
+                        newRow.insertCell(5).textContent = row['Model'];
+                        newRow.insertCell(6).textContent = row['ProductID'];
+                        newRow.insertCell(7).textContent = row['SenderCondition'];
+                        newRow.insertCell(8).textContent = row['SenderRemarks'];
+                        newRow.insertCell(9).textContent = row['ReceiverCondition'];
+                        newRow.insertCell(10).textContent = row['ReceiverRemark'];
                     });
+                    
+                    
                     
            }
         };

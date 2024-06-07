@@ -21,7 +21,7 @@ def approve_receive_request_function(data):
             form_found = False
             for index, row in df_handover.iterrows():
                 if row['FormID'] == form_id:
-                    df_handover.at[index, 'ApprovalToReceive'] = 'YES'
+                    df_handover.at[index, 'ApprovalToReceive'] = 1
                     df_handover.at[index, 'Status'] = 'Approved'
                     form_found = True
             if not form_found:
@@ -66,3 +66,21 @@ def approve_receive_request_function(data):
 
     except Exception as e:
         print(f"Unexpected error in approve_receive_request_function: {e}")
+
+
+
+def disapprove_receive_request_function(form_data):
+    # Read the Excel file into a DataFrame
+    df = pd.read_excel('Excel/handover_data.xlsx')
+
+    # Extract formNo from the form_data
+    formNo = form_data['formNo']
+    print(formNo)
+    # Update the 'status' column to 'Rejected' where 'FormID' matches the formNo received in the form data
+    df.loc[df['FormID'] == formNo, ['Status', 'ApprovalToReceive']] = ['Rejected', 0]
+
+    # Write the updated DataFrame back to the Excel file
+    with pd.ExcelWriter('Excel/handover_data.xlsx', engine='xlsxwriter') as writer:
+        df.to_excel(writer, index=False)
+
+
