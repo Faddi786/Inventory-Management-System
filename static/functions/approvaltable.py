@@ -19,8 +19,8 @@ def approval_table_function(project, session_data):
     df = pd.read_excel('Excel/handover_data.xlsx')
 
     # Filter the DataFrame based on the parameters
-    source_df = df[(df['Source'] == project) & (df["ApprovalToSend"] != "YES") & (df["Status"] == "Pending") & (df["ApprovalToReceive"] != "YES")]
-    destination_df = df[(df['Destination'] == project) & (~pd.isnull(df["CompletionDate"])) & (df["Status"] == "Pending")]
+    source_df = df[(df['Source'] == project) & (df["ApprovalToSend"] == "-") & (df["Status"] == "Pending") & (df["ApprovalToReceive"] == "-")]
+    destination_df = df[(df['Destination'] == project) & (df['CompletionDate'] != "-") & (df["Status"] == "Pending")]
 
     # Drop duplicates based on "FormID" in both dataframes
     source_df = source_df.drop_duplicates(subset="FormID")

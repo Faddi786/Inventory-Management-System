@@ -12,10 +12,14 @@ def transfer_progress_table_data_function(name, project, toa, session_data):
 
         if toa == "Employee":
             Send_df = df[(df['Sender'] == name) & (df['Status'] == "Pending")]
+
             Receive_df = df[(df['Receiver'] == name) & (df['Status'] == "Pending")]
         elif toa == "Manager":
-            Send_df = df[(df['Source'] == project) & (df['Sender'] == name) & (df['Status'] == "Pending")]
-            Receive_df = df[(df['Destination'] == project) & (df['Receiver'] == name) & (df['Status'] == "Pending")]
+            Send_df = df[(df['Source'] == project) | (df['Sender'] == name) & (df['Status'] == "Pending")]
+            print('this is the send df',Send_df)
+            Receive_df = df[(df['Destination'] == project) | (df['Receiver'] == name) & (df['Status'] == "Pending")]
+            print('this is the receive df',Receive_df)
+
         else:
             Send_df = df[df['Status'] == "Pending"]
             Receive_df =  df[df['Status'] == "Pending"]

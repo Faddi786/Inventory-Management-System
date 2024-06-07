@@ -228,13 +228,13 @@ def disapprove_receive_request():
 @app.route('/transfer_progress_table_data')
 def transfer_progress_table_data():
     try:
-        ID = session.get('login_row_data', {}).get('ID')
+        name = session.get('login_row_data', {}).get('Name')
 
         project = session.get('login_row_data', {}).get('Project')
 
         toa = session.get('login_row_data', {}).get('TypeOfAccount')
         print('this is the session data',session.get('login_row_data', {}))
-        data = transfer_progress.transfer_progress_table_data_function(ID, project, toa, session.get('login_row_data', {}))
+        data = transfer_progress.transfer_progress_table_data_function(name, project, toa, session.get('login_row_data', {}))
         
         print(data)
 
@@ -280,8 +280,9 @@ def transaction_history_table():
 
     name = session.get('login_row_data', {}).get('Name')
     project = session.get('login_row_data', {}).get('Project')
+    toa = session.get('login_row_data', {}).get('TypeOfAccount')
 
-    data = transaction_history.transaction_history_table_function(name,project,session.get('login_row_data', {}))
+    data = transaction_history.transaction_history_table_function(name,project,toa,session.get('login_row_data', {}))
     
     return data
 

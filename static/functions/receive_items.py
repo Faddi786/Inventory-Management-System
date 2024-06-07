@@ -25,9 +25,9 @@ def receive_items_table_data_function(name, session_data):
     
     # Filter the DataFrame based on the parameters
     filtered_data = df[(df['Receiver'] == name) & 
-                       (df['ApprovalToSend'] == "YES") & 
-                       (df['ApprovalToReceive'] != "YES") & 
-                       (df['CompletionDate'].isnull())]
+                       (df['ApprovalToSend'] == 1) & 
+                       (df['ApprovalToReceive'] == "-") & 
+                       (df['CompletionDate'] == "-")]
 
     # Sort the filtered data by 'InitiationDate' column in descending order
     filtered_data = filtered_data.sort_values(by='InitiationDate', ascending=False)
