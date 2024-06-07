@@ -42,7 +42,7 @@ var data;
                     var stage2 = 'Pending';
                     var stage3 = 'Pending';
                     var stage4 = 'Pending';
-                
+          
                     // Check conditions and update stages accordingly
                     if (firstFormData['ApprovalToSend'] === 1) {
                         stage2 = 'Completed';
@@ -60,7 +60,7 @@ var data;
                     if (firstFormData['ApprovalToReceive'] === 1) {
                         stage4 = 'Completed';
                     }
-                
+               
                     // Update HTML elements with the computed stages
                     document.getElementById("formNo").textContent = firstFormData['FormID'] || 'Loading Form ID ...';
                     document.getElementById("ewaybillno").textContent = firstFormData['EwayBillNo'] || 'Loading Eway Bill No ...';
