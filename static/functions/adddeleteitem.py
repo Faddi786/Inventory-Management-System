@@ -1,13 +1,25 @@
-import pandas as pd
 from flask import Flask, request, jsonify
+import pandas as pd
 
+app = Flask(__name__)
+
+@app.route('/additem', methods=['POST'])
+def add_item():
+    data = request.json
+    response = additem(data)
+    return response
+
+@app.route('/deleteitem', methods=['POST'])
+def delete_item():
+    data = request.json
+    response = deleteitem(data)
+    return response
 
 def additem(data):
-
     # Load the Excel file
     excel_file = "Excel/inventory.xlsx"
     df = pd.read_excel(excel_file)
-    
+
     # Extract values from the JSON data
     category = data['category']
     name = data['name']
@@ -45,13 +57,11 @@ def additem(data):
     else:
         return jsonify({'message': 'Category, owner, or project does not exist in the database'})
 
-
 def deleteitem(data):
     # Load the Excel file
     excel_file = "Excel/inventory.xlsx"
     df = pd.read_excel(excel_file)
 
-    print(data)
     # Extract values from the JSON data
     category = data['category']
     name = data['name']
@@ -61,7 +71,6 @@ def deleteitem(data):
     owner = data['owner']
     project = data['project']
 
-    print(category,name,make,model,product_id,owner,project)
     # Find and remove the matching row
     condition = (
         (df['Category'] == category) &
@@ -79,3 +88,6 @@ def deleteitem(data):
         return jsonify({'message': 'Item deleted successfully'})
     else:
         return jsonify({'message': 'No matching item found in the database'})
+
+if __name__ == '__main__':
+    app.run(debug=True)

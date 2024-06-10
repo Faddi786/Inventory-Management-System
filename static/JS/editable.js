@@ -7,12 +7,24 @@ window.onload = function() {
                 console.error('Error:', data.error);
                 return;
             }
+            
             document.querySelector('input[name="name"]').value = data.Name;
             document.querySelector('input[name="id"]').value = data.ID;
             document.querySelector('input[name="project"]').value = data.Project;
             document.querySelector('input[name="designation"]').value = data.TypeOfAccount;
             adjustButtonsVisibility(data);
 
+            if(data.TypeOfAccount === "Admin"){
+                const elementsToHide = document.querySelectorAll('.dontDisplay');
+
+                // Loop through the elements and hide them
+                elementsToHide.forEach(element => {
+                    element.style.display = 'none';
+                });
+            }
+            
+            
+            
 
         })
         .catch(error => console.error('Error:', error));
