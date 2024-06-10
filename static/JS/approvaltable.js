@@ -189,30 +189,30 @@ $(document).ready(function(){
     }
 
     // Function to update dropdowns based on visible rows
-    function updateDropdowns(data, filters) {
-        for (const [filterId, column] of Object.entries(filters)) {
-            const select = document.getElementById(filterId);
-            const uniqueValues = new Set(['ALL']);
+    // function updateDropdowns(data, filters) {
+    //     for (const [filterId, column] of Object.entries(filters)) {
+    //         const select = document.getElementById(filterId);
+    //         const uniqueValues = new Set(['ALL']);
 
-            data.forEach(item => {
-                uniqueValues.add(item[column]);
-            });
+    //         data.forEach(item => {
+    //             uniqueValues.add(item[column]);
+    //         });
 
-            const currentValue = select.value;
+    //         const currentValue = select.value;
 
-            select.innerHTML = '';
-            uniqueValues.forEach(value => {
-                const option = document.createElement('option');
-                option.value = value;
-                option.text = value;
-                select.appendChild(option);
-            });
+    //         select.innerHTML = '';
+    //         uniqueValues.forEach(value => {
+    //             const option = document.createElement('option');
+    //             option.value = value;
+    //             option.text = value;
+    //             select.appendChild(option);
+    //         });
 
-            if (uniqueValues.has(currentValue)) {
-                select.value = currentValue;
-            }
-        }
-    }
+    //         if (uniqueValues.has(currentValue)) {
+    //             select.value = currentValue;
+    //         }
+    //     }
+    // }
 
     // Function to send form ID to Flask route
     function sendFormID(formID) {
