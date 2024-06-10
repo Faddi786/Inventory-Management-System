@@ -40,7 +40,8 @@ $(document).ready(function(){
                 '<td>' + transaction.InitiationDate + '</td>' +
                 '<td>' + transaction.ApprovalType + '</td>' +
                 '</tr>');
-                console.log(transaction.ApprovalType);
+                console.log(transaction.EwayBillNo);
+               
         });
     }
 
@@ -112,7 +113,7 @@ $(document).ready(function(){
         for (const [filterId, column] of Object.entries(filters)) {
             const select = document.getElementById(filterId);
             if (select) {
-                select.innerHTML = '<option value="NONE">NONE</option>'; // Reset options
+                select.innerHTML = '<option value="ALL">ALL</option>'; // Reset options
                 const uniqueValues = getUniqueValues(data, column);
 
                 uniqueValues.forEach(value => {
@@ -148,63 +149,70 @@ $(document).ready(function(){
     }
 
     // Function to filter the table based on dropdown values
-    // Function to filter the table based on dropdown values
-function filterTable() {
-    const filters = {
-        'formIDFilter': 'FormID',
-        'ewayFilter': 'EwayBillNo',
-        'sourceFilter': 'Source',
-        'destinationFilter': 'Destination',
-        'senderFilter': 'Sender',
-        'receiverFilter': 'Receiver',
-        'doiFilter': 'InitiationDate',
-        'approvalFilter': 'ApprovalType'
-    };
+    function filterTable() {
+        const filters = {
+            'formIDFilter': 'FormID',
+            'ewayFilter': 'EwayBillNo',
+            'sourceFilter': 'Source',
+            'destinationFilter': 'Destination',
+            'senderFilter': 'Sender',
+            'receiverFilter': 'Receiver',
+            'doiFilter': 'InitiationDate',
+            'approvalFilter': 'ApprovalType'
+        };
 
-    // Get the initial data before filtering
-    let filteredData = allData;
-
-    // Apply filtering for each dropdown filter
-    for (const [filterId, column] of Object.entries(filters)) {
-        const filterValue = $('#' + filterId).val();
-        if (filterValue !== 'NONE') {
-            filteredData = filteredData.filter(item => item[column] === filterValue);
-        }
-    }
-
-    // Repopulate the table with the filtered data
-    populateTable(filteredData);
-
-    // Update dropdown options based on the filtered data
-    updateDropdowns(filteredData, filters);
-}
+        let filteredData = allData;
 
 
-    // Function to update dropdowns based on visible rows
-    function updateDropdowns(data, filters) {
         for (const [filterId, column] of Object.entries(filters)) {
-            const select = document.getElementById(filterId);
-            const uniqueValues = new Set(['NONE']);
-
-            data.forEach(item => {
-                uniqueValues.add(item[column]);
-            });
-
-            const currentValue = select.value;
-
-            select.innerHTML = '';
-            uniqueValues.forEach(value => {
-                const option = document.createElement('option');
-                option.value = value;
-                option.text = value;
-                select.appendChild(option);
-            });
-
-            if (uniqueValues.has(currentValue)) {
-                select.value = currentValue;
+            const filterValue = $('#' + filterId).val();
+       
+            if (filterValue !== 'ALL') {
+             
+                filteredData = filteredData.filter(item => {
+                    if (!isNaN(item[column]) && !isNaN(filterValue)) {
+                        // If both the item and filter value are numbers, compare them as numbers
+                        return parseFloat(item[column]) === parseFloat(filterValue);
+                    } else {
+                        // If either the item or filter value is not a number, compare them as strings
+                        return item[column].toString() === filterValue.toString();
+                    }
+                });
+                
+        
+              
             }
         }
+        
+        populateTable(filteredData);
+        updateDropdowns(filteredData, filters);
     }
+
+    // Function to update dropdowns based on visible rows
+    // function updateDropdowns(data, filters) {
+    //     for (const [filterId, column] of Object.entries(filters)) {
+    //         const select = document.getElementById(filterId);
+    //         const uniqueValues = new Set(['ALL']);
+
+    //         data.forEach(item => {
+    //             uniqueValues.add(item[column]);
+    //         });
+
+    //         const currentValue = select.value;
+
+    //         select.innerHTML = '';
+    //         uniqueValues.forEach(value => {
+    //             const option = document.createElement('option');
+    //             option.value = value;
+    //             option.text = value;
+    //             select.appendChild(option);
+    //         });
+
+    //         if (uniqueValues.has(currentValue)) {
+    //             select.value = currentValue;
+    //         }
+    //     }
+    // }
 
     // Function to send form ID to Flask route
     function sendFormID(formID) {
@@ -216,5 +224,5 @@ function filterTable() {
             }
         };
         xhr.send();
-    }
+    }
 });

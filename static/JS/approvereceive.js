@@ -8,8 +8,9 @@ window.onload = function() {
         if (xhr2.readyState == 4 && xhr2.status == 200) {
             parsedData = JSON.parse(xhr2.responseText);
             data = JSON.parse(parsedData);
+            console.log(data)
             console.log("We have reached");
-            console.log(data);
+            
 
             if (data && Array.isArray(data) && data.length > 0) {
                 var firstFormData = data[0];
@@ -19,7 +20,7 @@ window.onload = function() {
 
                 var completionDateTime = firstFormData['CompletionDate'];
                 var completionDate = completionDateTime ? completionDateTime.split(' ')[0] : 'Loading Initiation Date ...';
-
+                console.log("Completion Date: ", completionDateTime)
 
                 document.getElementById("formNo").textContent = firstFormData['FormID'] || 'Loading Form ID ...';
                 document.getElementById("ewaybillno").textContent = firstFormData['EwayBillNo'] || 'Loading Eway Bill No ...';
@@ -32,25 +33,30 @@ window.onload = function() {
             
                 var table = document.getElementById("mainTable").getElementsByTagName('tbody')[0];
                 data.forEach(function(row, index) {
-                    var newRow = table.insertRow();
-                    newRow.insertCell(0).textContent = index + 1;
-                
-                    // Status cell
-                    var statusCell = newRow.insertCell(1);
-                    var statusLabel = document.createElement('label');
-                    statusLabel.textContent = row['Reached'] ? 'Accepted' : 'Rejected';
-                    statusCell.appendChild(statusLabel);
-                
-                    // Remaining data cells
-                    newRow.insertCell(2).textContent = row['Category'];
-                    newRow.insertCell(3).textContent = row['Name'];
-                    newRow.insertCell(4).textContent = row['Make'];
-                    newRow.insertCell(5).textContent = row['Model'];
-                    newRow.insertCell(6).textContent = row['ProductID'];
-                    newRow.insertCell(7).textContent = row['SenderCondition'];
-                    newRow.insertCell(8).textContent = row['SenderRemarks'];
-                    newRow.insertCell(9).textContent = row['ReceiverCondition'];
-                    newRow.insertCell(10).textContent = row['ReceiverRemark'];
+                    if(row['CompletionDate']!="-"){
+                        var newRow = table.insertRow();
+                        newRow.insertCell(0).textContent = index + 1;
+                    
+                        // Status cell
+                          // Status cell
+                          var statusCell = newRow.insertCell(1);
+                          var statusLabel = document.createElement('label');
+                          statusLabel.textContent = (row['CompletionDate'] == "-" | row['CompletionDate'] == 0) ? 'Rejected' : 'Accepted';
+                          statusCell.appendChild(statusLabel);
+                        
+                        // Remaining data cells
+                        
+                    
+                        newRow.insertCell(2).textContent = row['Category'];
+                        newRow.insertCell(3).textContent = row['Name'];
+                        newRow.insertCell(4).textContent = row['Make'];
+                        newRow.insertCell(5).textContent = row['Model'];
+                        newRow.insertCell(6).textContent = row['ProductID'];
+                        newRow.insertCell(7).textContent = row['SenderCondition'];
+                        newRow.insertCell(8).textContent = row['SenderRemarks'];
+                        newRow.insertCell(9).textContent = row['ReceiverCondition'];
+                        newRow.insertCell(10).textContent = row['ReceiverRemark'];
+                    }
                 });
                 
             }
