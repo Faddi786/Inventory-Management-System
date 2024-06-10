@@ -73,4 +73,4 @@ def replace_nan_with_word(data, word="nan"):
     else:
         return data
 
-    return combine_data(Send_df, Receive_df)
+  

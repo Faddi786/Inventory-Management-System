@@ -1,5 +1,4 @@
 
-
 // Function to log row values and send them to the server
 function logRowValues() {
     var formObject = [];

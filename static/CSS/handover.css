@@ -295,6 +295,18 @@ tr:nth-child(even) {
     background-color: #f2f2f2; /* Alternate row background color */
 }
 
+/* Set standard width for all table columns */
+th,
+td {
+    width: 100px; /* Adjust the width as needed */
+}
+
+
+/* Styling for table rows */
+tr:nth-child(even) {
+    background-color: #f2f2f2; /* Alternate row background color */
+}
+
 /* Hide the second tab initially */
 #selectableTab {
     display: none;
