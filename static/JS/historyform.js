@@ -1,4 +1,3 @@
-
 // Declare the data variable at the global scope
 var data;
 
@@ -37,30 +36,56 @@ var data;
                     var CompletionDate = CompletionDateTime ? CompletionDateTime.split(' ')[0] : 'Loading Completion Date ...';
 
 
-                    // Set default values for stages
                     var stage1 = 'Completed';
                     var stage2 = 'Pending';
                     var stage3 = 'Pending';
                     var stage4 = 'Pending';
-          
-                    // Check conditions and update stages accordingly
-                    if (firstFormData['ApprovalToSend'] === 1) {
-                        stage2 = 'Completed';
-                    } else if (firstFormData['ApprovalToSend'] === 0) {
-                        stage2 = 'Disapproved';
-                        // If disapproved, set stage3 and stage4 to disapproved too
-                        stage3 = 'Disapproved';
-                        stage4 = 'Disapproved';
-                    }
                 
-                    if (firstFormData['CompletionDate'] !== 0) {
-                        stage3 = 'Completed';
+                    function stages(firstFormData){
+                        // Check conditions and update stages accordingly
+                        if (firstFormData['ApprovalToSend'] === 1 && firstFormData['CompletionDate'] === '-' && firstFormData['ApprovalToReceive'] === '-')  {
+                            stage2 = 'Completed';
+                            return;
+                        }
+                        else if (firstFormData['ApprovalToSend'] === 0) {
+                            stage1 = 'Completed';
+                            stage2 = 'Disapproved';
+                            // If disapproved, set stage3 and stage4 to disapproved too
+                            stage3 = 'Disapproved';
+                            stage4 = 'Disapproved';
+                            return;
+                        }
+                    
+                        if (firstFormData['CompletionDate'] !== 0 && firstFormData['CompletionDate'] !== '-' && firstFormData['ApprovalToReceive'] == '-') {
+                            stage1 = 'Completed';
+                            stage2 = 'Completed';
+                            stage3 = 'Completed';
+                            stage4 = 'Pending';
+                            return;
+                        }else if(firstFormData['CompletionDate'] == 0 && firstFormData['ApprovalToReceive'] == '-'  ){
+                            stage1 = 'Completed';
+                            stage2 = 'Completed';
+                            stage3 = 'Disapproved';
+                            stage4 = 'Disapproved';
+                            return;
+                        }
+                    
+                        if (firstFormData['ApprovalToReceive'] === 1) {
+                            stage1 = 'Completed';
+                            stage2 = 'Completed';
+                            stage3 = 'Completed';
+                            stage4 = 'Completed';
+                            return;
+                        }
+                        else if (firstFormData['ApprovalToReceive'] === 0) {
+                            stage1 = 'Completed';
+                            stage2 = 'Completed';
+                            stage3 = 'Completed';
+                            stage4 = 'Disapproved';
+                            return;
+                        }
                     }
-                
-                    if (firstFormData['ApprovalToReceive'] === 1) {
-                        stage4 = 'Completed';
-                    }
-               
+                    stages(firstFormData);
                     // Update HTML elements with the computed stages
                     document.getElementById("formNo").textContent = firstFormData['FormID'] || 'Loading Form ID ...';
                     document.getElementById("ewaybillno").textContent = firstFormData['EwayBillNo'] || 'Loading Eway Bill No ...';
@@ -70,7 +95,7 @@ var data;
                     document.getElementById("Destination").textContent = firstFormData['Destination'] || 'Loading To Project ...';
                     document.getElementById("InitiationDate").textContent = initiationDate;
                     document.getElementById("CompletionDate").textContent = CompletionDate;
-                
+                    console.log("stages value",stage1,stage2,stage3,stage4)
                     // Update stage elements with computed stage values
                     document.getElementById("Stage1").textContent = stage1;
                     document.getElementById("Stage2").textContent = stage2;
@@ -91,13 +116,10 @@ var data;
                         // Status cell
                         var statusCell = newRow.insertCell(1);
                         var statusLabel = document.createElement('label');
-                    
-                        var stage2Text = document.getElementById("Stage2").textContent;
-                        if (stage2Text.toLowerCase() === 'disapproved') {
-                            statusLabel.textContent = 'Rejected';
-                        } else {
-                            statusLabel.textContent = row['Reached'] === 1 ? 'Accepted' : 'Rejected';
-                        }
+
+                     
+                        statusLabel.textContent = (row['CompletionDate'] == "-" | row['CompletionDate'] == 0) ? 'Rejected' : 'Accepted';
+                        
                         statusCell.appendChild(statusLabel);
                     
                         // Remaining data cells
@@ -110,10 +132,7 @@ var data;
                         newRow.insertCell(8).textContent = row['SenderRemarks'];
                         newRow.insertCell(9).textContent = row['ReceiverCondition'];
                         newRow.insertCell(10).textContent = row['ReceiverRemark'];
-                    });
-                    
-                    
-                    
+                    });       
            }
         };
         xhr2.send();

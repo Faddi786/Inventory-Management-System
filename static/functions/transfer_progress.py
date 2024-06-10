@@ -15,10 +15,10 @@ def transfer_progress_table_data_function(name, project, toa, session_data):
 
             Receive_df = df[(df['Receiver'] == name) & (df['Status'] == "Pending")]
         elif toa == "Manager":
-            Send_df = df[(df['Source'] == project) | (df['Sender'] == name) & (df['Status'] == "Pending")]
-            print('this is the send df',Send_df)
-            Receive_df = df[(df['Destination'] == project) | (df['Receiver'] == name) & (df['Status'] == "Pending")]
-            print('this is the receive df',Receive_df)
+            Send_df = df[((df['Source'] == project) | (df['Sender'] == name) ) & (df['Status'] == "Pending")]
+            # print('this is the send df',Send_df)
+            Receive_df = df[((df['Destination'] == project) | (df['Receiver'] == name) ) & (df['Status'] == "Pending")]
+            # print('this is the receive df',Receive_df)
 
         else:
             Send_df = df[df['Status'] == "Pending"]
@@ -41,14 +41,14 @@ def transfer_progress_table_data_function(name, project, toa, session_data):
         data_dict = combined_df.to_dict(orient='records')
 
 
-        print('this is the data dict',data_dict)
-        print('this is the session data',combined_df)
+        # print('this is the data dict',data_dict)
+        # print('this is the session data',combined_df)
 
         
         # Apply replace_nan_with_word function on data dictionary and session_data dictionary
         data_dict = replace_nan_with_word(data_dict)
-        print('this is the data dict',data_dict)
-        print('this is the session data',session_data)
+        # print('this is the data dict',data_dict)
+        # print('this is the session data',session_data)
 
         
         # Combine data dictionaries
@@ -77,4 +77,4 @@ def replace_nan_with_word(data, word="nan"):
     else:
         return data
 
-    return combine_data(Send_df, Receive_df)
+    

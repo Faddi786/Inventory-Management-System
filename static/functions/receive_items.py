@@ -75,6 +75,8 @@ def receive_approval_request_function(form_data):
         serial_no = form_item['SerialNo']
         receiver_condition = form_item['ReceiverCondition']
         receiver_remark = form_item['ReceiverRemark']
+        # CompletionDate = form_item['CompletionDate']
+        # if(CompletionDate!="-"):
         print('This is the product details serial no:', serial_no)
         
         # Check if FormID and SerialNo match in the Excel data
@@ -109,7 +111,7 @@ def disapporve_receive_approval_request_function(form_data):
     formNo = form_data['formNo']
     print(formNo)
     # Update the 'status' column to 'Rejected' where 'FormID' matches the formNo received in the form data
-    df.loc[df['FormID'] == formNo, ['Status', 'CompletionDate']] = ['Rejected', 0]
+    df.loc[df['FormID'] == formNo, ['Status', 'CompletionDate']] = ['Rejected', "-"]
 
     # Write the updated DataFrame back to the Excel file
     with pd.ExcelWriter('Excel/handover_data.xlsx', engine='xlsxwriter') as writer:

@@ -37,9 +37,9 @@ var data;
                     var stage4 = 'Pending';
                 
                     // Check conditions and update stages accordingly
-                    if (firstFormData['ApprovalToSend'] === 'YES') {
+                    if (firstFormData['ApprovalToSend'] === 1) {
                         stage2 = 'Completed';
-                    } else if (firstFormData['ApprovalToSend'] === 'NO') {
+                    } else if (firstFormData['ApprovalToSend'] === 0) {
                         stage2 = 'Disapproved';
                         // If disapproved, set stage3 and stage4 to disapproved too
                         stage3 = 'Disapproved';
@@ -50,7 +50,7 @@ var data;
                         stage3 = 'Completed';
                     }
                 
-                    if (firstFormData['ApprovalToReceive'] === 'YES') {
+                    if (firstFormData['ApprovalToReceive'] === 1) {
                         stage4 = 'Completed';
                     }
                 
@@ -74,8 +74,8 @@ var data;
             console.error("No form data or invalid data format received");
         }
         
-            // Check if AskReceiveApproval is "yes" in the first dictionary
-            if (data.length > 0 && data[0]['ApprovalToReceive'] === 'yes') {
+            // Check if AskReceiveApproval is "1" in the first dictionary
+            if (data.length > 0 && data[0]['ApprovalToReceive'] === 1) {
                 var approvalButton = document.getElementById("approvalButton");
                 var approvalText = document.createTextNode("You have already approved this form transaction to receive items");
                 approvalButton.parentNode.replaceChild(approvalText, approvalButton);
