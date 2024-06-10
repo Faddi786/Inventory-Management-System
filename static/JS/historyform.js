@@ -41,9 +41,10 @@ var data;
                     var stage3 = 'Pending';
                     var stage4 = 'Pending';
                 
-                    function stages(firstFormData){
+                    function stages(firstFormData) {
+
                         // Check conditions and update stages accordingly
-                        if (firstFormData['ApprovalToSend'] === 1 && firstFormData['CompletionDate'] === '-' && firstFormData['ApprovalToReceive'] === '-')  {
+                        if (firstFormData['ApprovalToSend'] === 1 && firstFormData['CompletionDate'] === '-' && firstFormData['ApprovalToReceive'] === '-') {
                             stage2 = 'Completed';
                             return;
                         }
@@ -55,35 +56,64 @@ var data;
                             stage4 = 'Disapproved';
                             return;
                         }
-                    
-                        if (firstFormData['CompletionDate'] !== 0 && firstFormData['CompletionDate'] !== '-' && firstFormData['ApprovalToReceive'] == '-') {
-                            stage1 = 'Completed';
-                            stage2 = 'Completed';
-                            stage3 = 'Completed';
-                            stage4 = 'Pending';
-                            return;
-                        }else if(firstFormData['CompletionDate'] == 0 && firstFormData['ApprovalToReceive'] == '-'  ){
-                            stage1 = 'Completed';
-                            stage2 = 'Completed';
-                            stage3 = 'Disapproved';
-                            stage4 = 'Disapproved';
-                            return;
+    
+                        console.log(data.length)
+                        // Check completion dates of all other dictionaries in the list
+                        if (firstFormData['ApprovalToSend'] === 1 && firstFormData['CompletionDate'] !== '-' && firstFormData['ApprovalToReceive'] === '-') {
+    
+                            if (data.length > 1) {
+                                for (var i = 1; i < data.length; i++) {
+                                    var formData = data[i - 1];
+                                    let formDataAhead = data[i]
+                                    var completionDateCheck = formData['CompletionDate'];
+                                    let completionDateAhead = formDataAhead['CompletionDate'];
+    
+                                    if (completionDateCheck !== completionDateAhead) {
+                                        stage3 = 'Partially Approved';
+                                        stage2 = 'Completed';
+                                        stage1 = 'Completed';
+                                        break;
+                                        return;
+                                    }
+                                    else if (completionDateCheck === completionDateAhead === 0) {
+                                        stage2 = 'Completed';
+                                        stage3 = 'Disapproved';
+                                        stage4 = 'Disapproved';
+                                        return;
+    
+                                    } else {
+                                        stage2= 'Completed';
+                                        stage3 = 'Completed';
+                                        return;
+                                    }
+                                }
+                            } else {
+                                if (CompletionDateTime != 0 || CompletionDateTime != '-') {
+                                    stage2 = 'Completed';
+                                    stage3 = 'Completed'
+                                    return;
+                                } else if (CompletionDateTime == 0) {
+                                    stage3 = 'Disapproved'
+                                    stage4 = 'Disapproved'
+                                    return;
+                                }
+                            }
                         }
-                    
+    
+    
                         if (firstFormData['ApprovalToReceive'] === 1) {
-                            stage1 = 'Completed';
                             stage2 = 'Completed';
-                            stage3 = 'Completed';
+                            stage3 = 'Completed'
                             stage4 = 'Completed';
                             return;
                         }
                         else if (firstFormData['ApprovalToReceive'] === 0) {
-                            stage1 = 'Completed';
                             stage2 = 'Completed';
                             stage3 = 'Completed';
                             stage4 = 'Disapproved';
                             return;
                         }
+    
                     }
                     stages(firstFormData);
                     // Update HTML elements with the computed stages

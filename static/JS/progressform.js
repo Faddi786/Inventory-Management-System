@@ -1,5 +1,3 @@
-
-
 // Declare the data variable at the global scope
 var data;
 
@@ -36,52 +34,81 @@ window.onload = function () {
                 var stage3 = 'Pending';
                 var stage4 = 'Pending';
 
-                // Check conditions and update stages accordingly
-                if (firstFormData['ApprovalToSend'] === 1) {
-                    stage2 = 'Completed';
-                } else if (firstFormData['ApprovalToSend'] === 0) {
-                    stage2 = 'Disapproved';
-                    // If disapproved, set stage3 and stage4 to disapproved too
-                    stage3 = 'Disapproved';
-                    stage4 = 'Disapproved';
-                }
+                function stages(firstFormData) {
 
-                // Check completion dates of all other dictionaries in the list
-                if (data.length > 1) {
-                    for (var i = 0; i < data.length; i++) {
-                        var formData = data[i];
-                        let formDataAhead = data[i + 1]
-                        var completionDateCheck = formData['CompletionDate'];
-                        let completionDateAhead = formDataAhead['CompletionDate'];
+                    // Check conditions and update stages accordingly
+                    if (firstFormData['ApprovalToSend'] === 1 && firstFormData['CompletionDate'] === '-' && firstFormData['ApprovalToReceive'] === '-') {
+                        stage2 = 'Completed';
+                        return;
+                    }
+                    else if (firstFormData['ApprovalToSend'] === 0) {
+                        stage1 = 'Completed';
+                        stage2 = 'Disapproved';
+                        // If disapproved, set stage3 and stage4 to disapproved too
+                        stage3 = 'Disapproved';
+                        stage4 = 'Disapproved';
+                        return;
+                    }
 
-                        if (completionDateCheck !== completionDateAhead) {
-                            stage3 = 'Partially Approved'
-                            break;
-                        }
-                        else if (completionDateCheck === completionDateAhead === 0) {
-                            stage3 = 'Disapproved';
-                            stage4 = 'Disapproved'
+                    console.log(data.length)
+                    // Check completion dates of all other dictionaries in the list
+                    if (firstFormData['ApprovalToSend'] === 1 && firstFormData['CompletionDate'] !== '-' && firstFormData['ApprovalToReceive'] === '-') {
+
+                        if (data.length > 1) {
+                            for (var i = 1; i < data.length; i++) {
+                                var formData = data[i - 1];
+                                let formDataAhead = data[i]
+                                var completionDateCheck = formData['CompletionDate'];
+                                let completionDateAhead = formDataAhead['CompletionDate'];
+
+                                if (completionDateCheck !== completionDateAhead) {
+                                    stage3 = 'Partially Approved';
+                                    stage2 = 'Completed';
+                                    stage1 = 'Completed';
+                                    break;
+                                    return;
+                                }
+                                else if (completionDateCheck === completionDateAhead === 0) {
+                                    stage2 = 'Completed';
+                                    stage3 = 'Disapproved';
+                                    stage4 = 'Disapproved';
+                                    return;
+
+                                } else {
+                                    stage2= 'Completed';
+                                    stage3 = 'Completed';
+                                    return;
+                                }
+                            }
                         } else {
-                            stage3 = 'Completed';
+                            if (CompletionDateTime != 0 || CompletionDateTime != '-') {
+                                stage2 = 'Completed';
+                                stage3 = 'Completed'
+                                return;
+                            } else if (CompletionDateTime == 0) {
+                                stage3 = 'Disapproved'
+                                stage4 = 'Disapproved'
+                                return;
+                            }
                         }
                     }
-                } else {
-                    if (CompletionDateTime != 0 || CompletionDateTime != '-') {
+
+
+                    if (firstFormData['ApprovalToReceive'] === 1) {
+                        stage2 = 'Completed';
                         stage3 = 'Completed'
-                    } else if (CompletionDateTime == 0) {
-                        stage3 = 'Disapproved'
-                        stage4 = 'Disapproved'
+                        stage4 = 'Completed';
+                        return;
                     }
-                }
+                    else if (firstFormData['ApprovalToReceive'] === 0) {
+                        stage2 = 'Completed';
+                        stage3 = 'Completed';
+                        stage4 = 'Disapproved';
+                        return;
+                    }
 
-
-                if (firstFormData['ApprovalToReceive'] === 1) {
-                    stage4 = 'Completed';
                 }
-                else if (firstFormData['ApprovalToReceive'] === 0) {
-                    stage4 = 'Disapproved';
-                }
-
+                stages(firstFormData);
                 // var statusCell = newRow.insertCell(1);
                 // var statusLabel = document.createElement('label');
                 // statusLabel.textContent = (row['CompletionDate'] == "-" | row['CompletionDate'] == 0) ? 'Rejected' : 'Accepted';
@@ -159,4 +186,3 @@ window.onload = function () {
     };
     xhr2.send();
 };
-
