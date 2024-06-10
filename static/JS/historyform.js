@@ -156,6 +156,9 @@ var data;
                        
                         statusLabel.textContent = (row['CompletionDate'] == "-" | row['CompletionDate'] == 0) ? 'Rejected' : 'Accepted';
                         
+                        // if((row['CompletionDate'] !== "-" | row['CompletionDate'] !== 0)){
+                        //     statusLabel.textContent = ""
+                        // }
                         statusCell.appendChild(statusLabel);
                     
                         // Remaining data cells

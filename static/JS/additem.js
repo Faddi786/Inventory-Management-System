@@ -51,7 +51,18 @@ function addItem() {
                 } catch (e) {
                     floatingMessageBox('An error occurred while processing the response', 'red');
                 }
-            } else {
+
+            } else if (xhr.status === 400) {
+                try {
+                    var response = JSON.parse(xhr.responseText);
+                    if (response.message === 'Product ID already exists') {
+                        floatingMessageBox('Product ID already exists', 'red');
+                    }
+                } catch (e) {
+                    floatingMessageBox('An error occurred while processing the response', 'red');
+                }
+            }
+            else {
                 floatingMessageBox('An error occurred with the request: ' + xhr.statusText, 'red');
             }
         }
@@ -60,6 +71,7 @@ function addItem() {
     xhr.onerror = function () {
         floatingMessageBox('Request failed. Please check your network connection.', 'red');
     };
+
     var data = JSON.stringify({
         category: category,
         name: name,
@@ -69,6 +81,6 @@ function addItem() {
         owner: owner,
         project: project
     });
-    console.log('this is the data to be send',data)
+    console.log('this is the data to be sent', data)
     xhr.send(data);
 }

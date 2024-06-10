@@ -1,8 +1,19 @@
 from flask import Flask, request, jsonify
 import pandas as pd
 
-app = Flask(__name__)
+app = Flask(_name_)
 
+def add_item():
+    data = request.json
+    product_id = data.get('productId')
+    
+    db = get_db()
+    
+    # Check if productId exists
+    existing_item = db.execute('SELECT * FROM items WHERE product_id = ?', (product_id,)).fetchone()
+    
+    if existing_item:
+        return jsonify({'message': 'Product ID already exists'}), 400
 @app.route('/additem', methods=['POST'])
 def add_item():
     data = request.json
@@ -29,10 +40,15 @@ def additem(data):
     owner = data['owner']
     project = data['project']
 
+    # Check if productId already exists
+    if product_id in df['ProductID'].values:
+        return jsonify({'message': 'Product ID already exists'}), 400
+
     # Check if category, owner, and project exist in their respective columns
     cat_flag = category in df['Category'].values
     owner_flag = owner in df['Owner'].values
     project_flag = project in df['Project'].values
+    
 
     if cat_flag and owner_flag and project_flag:
         # Create a new DataFrame with the new entry
@@ -89,5 +105,5 @@ def deleteitem(data):
     else:
         return jsonify({'message': 'No matching item found in the database'})
 
-if __name__ == '__main__':
+if _name_ == '_main_':
     app.run(debug=True)
