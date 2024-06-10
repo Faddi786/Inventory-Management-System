@@ -68,6 +68,7 @@ function addItem() {
         }
     };
 
+    
     xhr.onerror = function () {
         floatingMessageBox('Request failed. Please check your network connection.', 'red');
     };
