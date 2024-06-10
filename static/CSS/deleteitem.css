@@ -171,10 +171,10 @@ body {
     flex-direction: column;
     background-color: #404040;
     color: white;
-    margin-top: 5%;
-    height: 500px;
-    width: 20% !important;
-    padding: 0 !important;
+    margin-top: 2%;
+    height: 75%;
+    width: 30% !important;
+    padding: 1% !important;
     box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.5), -5px -5px 10px rgba(255, 255, 255, 0.5);
     border-radius: 5px;
     overflow: hidden; /* Ensure content stays within the container */
@@ -186,9 +186,16 @@ body {
     border: 1px solid white;
     padding: 5px;
     border-radius: 5px;
-    width: 80%;
+    width: 60%;
+    margin-left: 30%;
+    margin-top: -5.5%;
+  
+}
+.container label {
+    margin-top: 5%;
+    width: 20%;
     margin-left: 10%;
-    margin-top: 20px
+ 
 }
 
 .container button {
