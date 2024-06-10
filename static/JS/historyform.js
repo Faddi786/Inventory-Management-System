@@ -117,7 +117,13 @@ var data;
                         var statusCell = newRow.insertCell(1);
                         var statusLabel = document.createElement('label');
 
-                     
+                        // if(row['CompletionDate'] == "-" | row['CompletionDate'] == 0){
+                        //     statusLabel.textContent = "Rejected"
+                        // }
+                        // else{
+                        //     statusLabel.textContent = "Accepted"
+                        // }
+                       
                         statusLabel.textContent = (row['CompletionDate'] == "-" | row['CompletionDate'] == 0) ? 'Rejected' : 'Accepted';
                         
                         statusCell.appendChild(statusLabel);

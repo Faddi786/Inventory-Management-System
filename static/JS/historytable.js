@@ -103,7 +103,7 @@
 
             destinationOptions.push("NONE");
             $('#destinationFilter').append('<option value="'+"NONE"+'">'+"NONE"+'</option>')
-
+           
             senderOptions.push("NONE");
             $('#senderFilter').append('<option value="'+"NONE"+'">'+"NONE"+'</option>')
 
