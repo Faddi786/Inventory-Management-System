@@ -111,7 +111,7 @@ def disapporve_receive_approval_request_function(form_data):
     formNo = form_data['formNo']
     print(formNo)
     # Update the 'status' column to 'Rejected' where 'FormID' matches the formNo received in the form data
-    df.loc[df['FormID'] == formNo, ['Status', 'CompletionDate']] = ['Rejected', "-"]
+    df.loc[df['FormID'] == formNo, ['Status', 'CompletionDate']] = ['Rejected', 0]
 
     # Write the updated DataFrame back to the Excel file
     with pd.ExcelWriter('Excel/handover_data.xlsx', engine='xlsxwriter') as writer:
