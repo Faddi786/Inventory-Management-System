@@ -4,7 +4,7 @@ let tableData = [];
 function fetchData() {
     var xhr = new XMLHttpRequest();
     xhr.open('GET', '/invent_dashboard', true);
-    xhr.onreadystatechange = function() {
+    xhr.onreadystatechange = function () {
         if (xhr.readyState === XMLHttpRequest.DONE) {
             if (xhr.status === 200) {
                 var responseData = JSON.parse(xhr.responseText);
@@ -17,6 +17,7 @@ function fetchData() {
                 displayData(filteredData);
                 populateFilters(filteredData);
                 attachFilterListeners();
+                attachSearchListener();
                 adjustButtonsVisibility(sessionData);
 
             } else {
@@ -58,6 +59,7 @@ function populateFilters(data) {
                 option.text = value;
                 select.appendChild(option);
             });
+            
         }
     }
 }
@@ -259,7 +261,14 @@ function updateDropdowns(activeFilters) {
     }
 }
 
-
-
+// Function to attach search listener to search bar
+function attachSearchListener() {
+    $("#myInput").on("keyup", function () {
+        var value = $(this).val().toLowerCase();
+        $("#data-table tbody tr").filter(function () {
+            $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1);
+        });
+    });
+}
 // Call the fetchData function when the page loads
 window.onload = fetchData;

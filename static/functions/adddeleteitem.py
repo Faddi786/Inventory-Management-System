@@ -1,7 +1,7 @@
 from flask import Flask, request, jsonify
 import pandas as pd
 
-app = Flask(_name_)
+app = Flask(__name__)
 
 def add_item():
     data = request.json
@@ -105,5 +105,5 @@ def deleteitem(data):
     else:
         return jsonify({'message': 'No matching item found in the database'})
 
-if _name_ == '_main_':
+if __name__ == '__main__':
     app.run(debug=True)

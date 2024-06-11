@@ -14,8 +14,8 @@ def transaction_history_table_function(name, project, toa, session_data):
             Send_df = df[(df['Sender'] == name) & (df['Status'] != "Pending")]
             Receive_df = df[(df['Receiver'] == name) & (df['Status'] != "Pending")]
         elif toa == "Manager":
-            Send_df = df[(df['Source'] == project) | (df['Sender'] == name) & (df['Status'] != "Pending")]
-            Receive_df = df[(df['Destination'] == project) | (df['Receiver'] == name) & (df['Status'] != "Pending")]
+            Send_df = df[((df['Source'] == project) | (df['Sender'] == name)) & (df['Status'] != "Pending")]
+            Receive_df = df[((df['Destination'] == project) | (df['Receiver'] == name)) & (df['Status'] != "Pending")]
         else:
             Send_df = df[df['Status'] != "Pending"]
             Receive_df =  df[df['Status'] != "Pending"]
