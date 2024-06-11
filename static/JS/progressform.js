@@ -53,11 +53,11 @@ window.onload = function () {
                     console.log(data.length)
                     // Check completion dates of all other dictionaries in the list
                     if (firstFormData['ApprovalToSend'] === 1 && firstFormData['CompletionDate'] !== '-' && firstFormData['ApprovalToReceive'] === '-') {
-
+                        console.log(data.length)
                         if (data.length > 1) {
-                            for (var i = 1; i < data.length; i++) {
-                                var formData = data[i - 1];
-                                let formDataAhead = data[i]
+                            for (var i = 0; i < data.length-1; i++) {
+                                var formData = data[i];
+                                let formDataAhead = data[i+1]
                                 var completionDateCheck = formData['CompletionDate'];
                                 let completionDateAhead = formDataAhead['CompletionDate'];
 

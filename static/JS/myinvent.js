@@ -17,6 +17,7 @@ function fetchData() {
                 displayData(filteredData);
                 populateFilters(filteredData);
                 attachFilterListeners();
+                attachSearchListener();
                 adjustButtonsVisibility(sessionData);
 
             } else {
@@ -259,7 +260,15 @@ function updateDropdowns(activeFilters) {
     }
 }
 
-
+// Function to attach search listener to search bar
+function attachSearchListener() {
+    $("#myInput").on("keyup", function() {
+        var value = $(this).val().toLowerCase();
+        $("#data-table tbody tr").filter(function() {
+            $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1);
+        });
+    });
+}
 
 // Call the fetchData function when the page loads
 window.onload = fetchData;

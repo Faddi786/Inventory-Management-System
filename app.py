@@ -99,7 +99,7 @@ def login():
     print(username, password)
 
     # Check if username and password exist in the user_data DataFrame
-    matched_rows = user_data[(user_data['ID'] == username) & (user_data['Password'] == password)]
+    matched_rows = user_data[(user_data['Name'] == username) & (user_data['Password'] == password)]
 
     if not matched_rows.empty:
         
