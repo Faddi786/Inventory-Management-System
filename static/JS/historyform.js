@@ -88,7 +88,7 @@ var data;
                                     }
                                 }
                             } else {
-                                if (CompletionDateTime != 0 || CompletionDateTime != '-') {
+                                if (CompletionDateTime != 0 && CompletionDateTime != '-') {
                                     stage2 = 'Completed';
                                     stage3 = 'Completed'
                                     return;

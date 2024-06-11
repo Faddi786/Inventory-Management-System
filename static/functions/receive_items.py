@@ -88,7 +88,11 @@ def receive_approval_request_function(form_data):
             match_row_index = match_row.index[0]  # Assuming there's only one match
             excel_data.iloc[match_row_index, 13] = receiver_condition
             excel_data.iloc[match_row_index, 14] = receiver_remark
-            excel_data.iloc[match_row_index, 18] = current_datetime  # Assuming the 19th column is index 18
+            if(form_item['Reached']):
+                excel_data.iloc[match_row_index, 18] = current_datetime  # Assuming the 19th column is index 18
+            else:
+                excel_data.iloc[match_row_index, 19] = 'Rejected'  # Assuming the 19th column is index 18
+                excel_data.iloc[match_row_index, 18] = 0  # Assuming the 19th column is index 18
         else:
             print(f"No matching entry found for FormID: {form_no} and SerialNo: {serial_no}")
     
