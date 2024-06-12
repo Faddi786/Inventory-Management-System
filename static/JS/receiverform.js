@@ -25,12 +25,14 @@ function logRowValues() {
 
                 var serialNo = cells[6].innerText;
 
+                
                 var rowData = {
                     SerialNo: serialNo,
                     ReceiverCondition: selectedCondition,
                     ReceiverRemark: receiverRemarks,
                     Reached: checkbox.checked
                 };
+                
 
                 formObject.push(rowData);
             // }

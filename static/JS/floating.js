@@ -82,7 +82,7 @@ function adjustButtonsVisibility(userData) {
         },
         manager: {
             sectionsToRemove: ['addeletesection'],
-            buttonsToRemove: []
+            buttonsToRemove: [ 'totalInventoryBtn']
         },
         admin: {
             sectionsToRemove: ['approveitemsection','sendreceivesection'],
