@@ -80,16 +80,15 @@ window.onload = function () {
                                     stage2 = 'Completed';
                                     stage3 = 'Disapproved';
                                     stage4 = 'Disapproved';
-                                  
 
                                 } else {
                                     stage2= 'Completed';
                                     stage3 = 'Completed';
-                                    
+
                                 }
                             }
                         } else {
-                            if (CompletionDateTime != 0 || CompletionDateTime != '-') {
+                            if (CompletionDateTime != 0 && CompletionDateTime != '-') {
                                 stage2 = 'Completed';
                                 stage3 = 'Completed'
                                 return;
@@ -158,7 +157,27 @@ window.onload = function () {
 
                 var statusCell = newRow.insertCell(1);
                 var statusLabel = document.createElement('label');
-                statusLabel.textContent = (row['CompletionDate'] == "-" | row['CompletionDate'] == 0) ? 'Rejected' : 'Accepted';
+                // statusLabel.textContent = (row['CompletionDate'] == "-" | row['CompletionDate'] == 0) ? 'Rejected' : 'Accepted';
+                
+                if(row['ApprovalToSend']=='-'){
+                    // stage1
+                    statusLabel.textContent = 'Waiting For Approval to Send'
+                }else if(row['InitiationDate']!=0 && row['InitiationDate']!='-' && row['ApprovalToSend']==1 && row['Status']!='Rejected'){
+                    // stage2
+                    statusLabel.textContent = 'Waiting For Receival'
+                }else if(row['ApprovalToSend']==1 && row['Status']!='Rejected'){
+                    // stage3
+                    statusLabel.textContent = 'Waiting For Approval to Receive'
+                }
+                else if(row['ApprovalToSend']==1 && row['Status']=='Rejected'){
+                    // stage 3 Reject
+                    statusLabel.textContent = 'Rejected'
+                }
+                else{
+                    // stage4
+                    statusLabel.textContent = 'RUN NAHI HORA MEI'
+                }
+                                                
                 statusCell.appendChild(statusLabel);
 
                 var productCategoryCell = newRow.insertCell(2);

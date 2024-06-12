@@ -38,7 +38,7 @@ function getUniqueValues(data, column) {
 function populateFilters(data) {
     const filters = {
         'filter-category': 'Category',
-         
+
         'filter-name': 'Name',
         'filter-make': 'Make',
         'filter-model': 'Model',
@@ -113,7 +113,6 @@ function displayData(data) {
 function filterTable() {
     const filters = {
         'filter-category': 'Category',
-         
         'filter-name': 'Name',
         'filter-make': 'Make',
         'filter-model': 'Model',
@@ -148,7 +147,6 @@ function filterTable() {
 function updateDropdowns(activeFilters) {
     const filters = {
         'filter-category': 'Category',
-         
         'filter-name': 'Name',
         'filter-make': 'Make',
         'filter-model': 'Model',
@@ -199,7 +197,7 @@ function columnIndex(columnName) {
 // Function to attach filter listeners to dropdowns
 function attachFilterListeners() {
     const filterIds = [
-        'filter-category',   , 'filter-name',
+      'filter-category', 'filter-name',
         'filter-make', 'filter-model', 'filter-condition', 'filter-project', 'filter-owner'
     ];
 
@@ -220,7 +218,6 @@ function attachFilterListeners() {
 function updateDropdowns(activeFilters) {
     const filters = {
         'filter-category': 'Category',
-         
         'filter-name': 'Name',
         'filter-make': 'Make',
         'filter-model': 'Model',

@@ -94,7 +94,8 @@ def receive_approval_request_function(form_data):
             if(form_item['Reached']):
                 excel_data.iloc[match_row_index, 18] = current_datetime  # Assuming the 19th column is index 18
             else:
-                excel_data.iloc[match_row_index, 18] = 0
+                excel_data.iloc[match_row_index, 19] = 'Rejected'  # Assuming the 19th column is index 18
+                excel_data.iloc[match_row_index, 18] = 0  # Assuming the 19th column is index 18
         else:
             print(f"No matching entry found for FormID: {form_no} and SerialNo: {serial_no}")
     
@@ -117,7 +118,9 @@ def disapporve_receive_approval_request_function(form_data):
     formNo = form_data['formNo']
     print(formNo)
     # Update the 'status' column to 'Rejected' where 'FormID' matches the formNo received in the form data
+
     df.loc[df['FormID'] == formNo, ['Status', 'CompletionDate']] = ['Rejected',0]
+
 
     # Write the updated DataFrame back to the Excel file
     with pd.ExcelWriter('Excel/handover_data.xlsx', engine='xlsxwriter') as writer:

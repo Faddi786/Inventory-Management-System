@@ -111,7 +111,7 @@ function displayData(data) {
 function filterTable() {
     const filters = {
         'filter-category': 'Category',
-         
+
         'filter-name': 'Name',
         'filter-make': 'Make',
         'filter-model': 'Model',
@@ -146,7 +146,6 @@ function filterTable() {
 function updateDropdowns(activeFilters) {
     const filters = {
         'filter-category': 'Category',
-         
         'filter-name': 'Name',
         'filter-make': 'Make',
         'filter-model': 'Model',
@@ -218,7 +217,6 @@ function attachFilterListeners() {
 function updateDropdowns(activeFilters) {
     const filters = {
         'filter-category': 'Category',
-         
         'filter-name': 'Name',
         'filter-make': 'Make',
         'filter-model': 'Model',
