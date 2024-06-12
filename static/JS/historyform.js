@@ -29,13 +29,24 @@ var data;
                     var initiationDate = initiationDateTime ? initiationDateTime.split(' ')[0] : 'Loading Initiation Date ...';
                 
 
-                    // Assuming firstFormData contains the date in the format 'YYYY-MM-DD HH:MM:SS'
-                    var CompletionDateTime = firstFormData['CompletionDate'];
-
-                    // Extract just the date part
-                    var CompletionDate = CompletionDateTime ? CompletionDateTime.split(' ')[0] : 'Loading Completion Date ...';
-
-
+                    var CompletionDate = firstFormData['CompletionDate']
+                    if (data.length>1) {
+                        for (i = 0; i < data.length; i++) {
+                            let allComp = data[i]
+                            var CompletionDateTime = allComp['CompletionDate'];
+                            if(CompletionDateTime!=0){
+                                CompletionDate = CompletionDateTime.toString().split(' ')[0]
+                                break;
+                            }
+                            // break;
+                            console.log("CD: ",CompletionDateTime)
+                        }
+                        if(CompletionDateTime == '0'){
+                            
+                            CompletionDate = 'N/A'
+                        }
+                    }
+                    
                     var stage1 = 'Completed';
                     var stage2 = 'Pending';
                     var stage3 = 'Pending';

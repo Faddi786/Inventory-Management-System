@@ -17,10 +17,20 @@ window.onload = function() {
                 var initiationDateTime = firstFormData['InitiationDate'];
                 var initiationDate = initiationDateTime ? initiationDateTime.split(' ')[0] : 'Loading Initiation Date ...';
                 
+                var completionDate = firstFormData['CompletionDate']
 
-                var completionDateTime = firstFormData['CompletionDate'];
-                var completionDate = completionDateTime ? completionDateTime.split(' ')[0] : 'Loading Initiation Date ...';
-                console.log("Completion Date: ", completionDateTime)
+                if (data.length>1) {
+                    for (i = 0; i < data.length; i++) {
+                        let allComp = data[i]
+                        var completionDateTime = allComp['CompletionDate'];
+                        if(completionDateTime!=0){
+                            completionDate = completionDateTime.toString().split(' ')[0]
+                            break;
+                        }
+                        // break;
+                        console.log("CD: ",completionDateTime.toString().split(' ')[0])
+                    }
+                }
 
                 document.getElementById("formNo").textContent = firstFormData['FormID'] || 'Loading Form ID ...';
                 document.getElementById("ewaybillno").textContent = firstFormData['EwayBillNo'] || 'Loading Eway Bill No ...';
