@@ -70,20 +70,24 @@ function logRowValues() {
         if (xhr.readyState === XMLHttpRequest.DONE) {
             if (xhr.status === 200) {
                 console.log('Success:', xhr.responseText);
-                floatingMessageBox("Approval has been successfully given.\n The sender may proceed to send the items.", 'green', 'approvetable');
-            } else if (xhr.status === 400 && xhr.responseText.includes('empty space')) {
-                floatingMessageBox("No empty space please");
-                document.getElementById('disapproveButton').disabled = false; // Disable the button
-                document.getElementById('approvalButton').disabled = false; // Disable the button
-
-
+                if (xhr.responseText === "Approval has been successfully given") {
+                    floatingMessageBox("Approval has been successfully given.\n The sender may proceed to send the items.", 'green', 'approvetable');
+                } else if (xhr.responseText === "Eway Bill Exists") {
+                    floatingMessageBox('Ewaybill already exists');
+                    document.getElementById('approvalButton').disabled = false; // Disable the button
+                    document.getElementById('disapproveButton').disabled = false; // Disable the button
+                } else {
+                    console.error('Error:', xhr.responseText);
+                    alert('An unexpected error occurred: ' + xhr.responseText);
+                }
             } else {
                 console.error('Error:', xhr.status);
-                floatingMessageBox(xhr.status, 'red');
-                // Handle other error responses from the server
+                alert('An error occurred while processing the request. Status code: ' + xhr.status);
             }
         }
     };
+    
+    
     
     xhr.setRequestHeader("Content-Type", "application/json"); // Set request header
     xhr.send(JSON.stringify(formObject));

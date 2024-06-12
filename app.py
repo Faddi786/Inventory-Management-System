@@ -193,8 +193,9 @@ def get_form_data():
 def approve_send_request():
     form_data = request.json  # Assuming the form data is sent as JSON
     print("This is the approve_send_request form data", form_data)
-    approvesend.approve_send_request_function(form_data)
-    return "Approval has been successfully given, the email is sent, the sender may proceed to send the items"
+    response = approvesend.approve_send_request_function(form_data)
+    print("this is the response we are sending",response)
+    return response
 
 
 @app.route('/disapprove_send_request', methods=['POST'])
