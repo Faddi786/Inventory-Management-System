@@ -27,7 +27,7 @@ def receive_items_table_data_function(name, session_data):
     filtered_data = df[(df['Receiver'] == name) & 
                        (df['ApprovalToSend'] == 1) & 
                        (df['ApprovalToReceive'] == "-") & 
-                       (df['CompletionDate'] == "-")]
+                       (df['CompletionDate'] == "-")] 
 
     # Sort the filtered data by 'InitiationDate' column in descending order
     filtered_data = filtered_data.sort_values(by='InitiationDate', ascending=False)
@@ -75,7 +75,10 @@ def receive_approval_request_function(form_data):
         serial_no = form_item['SerialNo']
         receiver_condition = form_item['ReceiverCondition']
         receiver_remark = form_item['ReceiverRemark']
+
+        # receiver_remark = form_item['ReceiverRemark']
         # CompletionDate = form_item['CompletionDate']
+        
         # if(CompletionDate!="-"):
         print('This is the product details serial no:', serial_no)
         
@@ -88,7 +91,10 @@ def receive_approval_request_function(form_data):
             match_row_index = match_row.index[0]  # Assuming there's only one match
             excel_data.iloc[match_row_index, 13] = receiver_condition
             excel_data.iloc[match_row_index, 14] = receiver_remark
-            excel_data.iloc[match_row_index, 18] = current_datetime  # Assuming the 19th column is index 18
+            if(form_item['Reached']):
+                excel_data.iloc[match_row_index, 18] = current_datetime  # Assuming the 19th column is index 18
+            else:
+                excel_data.iloc[match_row_index, 18] = 0
         else:
             print(f"No matching entry found for FormID: {form_no} and SerialNo: {serial_no}")
     
@@ -111,7 +117,7 @@ def disapporve_receive_approval_request_function(form_data):
     formNo = form_data['formNo']
     print(formNo)
     # Update the 'status' column to 'Rejected' where 'FormID' matches the formNo received in the form data
-    df.loc[df['FormID'] == formNo, ['Status', 'CompletionDate']] = ['Rejected', "-"]
+    df.loc[df['FormID'] == formNo, ['Status', 'CompletionDate']] = ['Rejected',0]
 
     # Write the updated DataFrame back to the Excel file
     with pd.ExcelWriter('Excel/handover_data.xlsx', engine='xlsxwriter') as writer:

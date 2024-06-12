@@ -24,9 +24,10 @@ window.onload = function () {
 
                 // Assuming firstFormData contains the date in the format 'YYYY-MM-DD HH:MM:SS'
                 var CompletionDateTime = firstFormData['CompletionDate'];
-
+                
                 // Extract just the date part
                 var CompletionDate = CompletionDateTime ? CompletionDateTime.split(' ')[0] : 'Loading Completion Date ...';
+               
 
                 // Set default values for stages
                 var stage1 = 'Completed';
@@ -52,7 +53,7 @@ window.onload = function () {
 
                     console.log(data.length)
                     // Check completion dates of all other dictionaries in the list
-                    if (firstFormData['ApprovalToSend'] === 1 && firstFormData['CompletionDate'] !== '-' && firstFormData['ApprovalToReceive'] === '-') {
+                    if (firstFormData['ApprovalToSend'] === 1 && (firstFormData['CompletionDate'] !== '-') && firstFormData['ApprovalToReceive'] === '-') {
                         console.log(data.length)
                         if (data.length > 1) {
                             for (var i = 0; i < data.length-1; i++) {
@@ -65,6 +66,13 @@ window.onload = function () {
                                     stage3 = 'Partially Approved';
                                     stage2 = 'Completed';
                                     stage1 = 'Completed';
+                                    if(completionDateAhead != 0){
+                                        CompletionDate = completionDateAhead.split(' ')[0]
+
+                                    }else{
+                                        CompletionDate = completionDateCheck.split(' ')[0]
+                                    }
+
                                     break;
                                     return;
                                 }
@@ -72,12 +80,12 @@ window.onload = function () {
                                     stage2 = 'Completed';
                                     stage3 = 'Disapproved';
                                     stage4 = 'Disapproved';
-                                    return;
+                                  
 
                                 } else {
                                     stage2= 'Completed';
                                     stage3 = 'Completed';
-                                    return;
+                                    
                                 }
                             }
                         } else {

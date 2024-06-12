@@ -16,7 +16,7 @@ function logRowValues() {
         if (index !== 0) {
             var cells = row.querySelectorAll('td');
             var checkbox = cells[0].querySelector('input[type="checkbox"]');
-            if (checkbox.checked) {
+            // if (checkbox.checked) {
                 var conditionSelect = cells[9].querySelector('select[name="conditionReceiver"]');
                 var selectedCondition = conditionSelect ? conditionSelect.value : '';
 
@@ -25,15 +25,17 @@ function logRowValues() {
 
                 var serialNo = cells[6].innerText;
 
+                
                 var rowData = {
                     SerialNo: serialNo,
                     ReceiverCondition: selectedCondition,
                     ReceiverRemark: receiverRemarks,
                     Reached: checkbox.checked
                 };
+                
 
                 formObject.push(rowData);
-            }
+            // }
         }
     });
 
