@@ -90,12 +90,12 @@ var data;
                                         stage2 = 'Completed';
                                         stage3 = 'Disapproved';
                                         stage4 = 'Disapproved';
-                                        return;
+                                        
     
                                     } else {
                                         stage2= 'Completed';
                                         stage3 = 'Completed';
-                                        return;
+                                    
                                     }
                                 }
                             } else {
