@@ -14,6 +14,8 @@ $(document).ready(function(){
             populateTable(allData);
             populateFilterDropdowns(allData);
             attachFilterListeners();
+            attachSearchListener();
+
         })
         .fail(function(jqxhr, textStatus, error) {
             var err = textStatus + ", " + error;
@@ -225,4 +227,12 @@ $(document).ready(function(){
         };
         xhr.send();
     }
+function attachSearchListener() {
+    $("#myInput").on("keyup", function() {
+        var value = $(this).val().toLowerCase();
+        $("#transactionTable tbody tr").filter(function() {
+            $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1);
+        });
+    });
+}
 });
